@@ -1,4 +1,5 @@
-﻿// 
+﻿// Copyright Steve Streeting
+// Licensed under the MIT License (see License.txt)
 
 #pragma once
 

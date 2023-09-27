@@ -1,6 +1,5 @@
-﻿// 
-
-
+﻿// Copyright Steve Streeting
+// Licensed under the MIT License (see License.txt)
 #include "SsLightFlicker.h"
 
 #include "Net/UnrealNetwork.h"
