@@ -1,2 +1,3 @@
 # SsUnrealUtils
-Miscellaneous Unreal utilities
+
+Just a bunch of Unreal snippets that can be used together or separately. Each folder should be self-contained.
