@@ -4,7 +4,7 @@ This component adds the ability to generate a light flicker value, which can be 
 
 It works on the same basis as Quake, Half Life: Alyx and countless other games; there is a "flicker string" made up of lower-case letters a-z, where a = 0, m = 1 and z ~= 2 (actually 2.08 in practice), meaning the default value range is from completely off, to double brightness.
 
-You can use all the [Quake in-built flicker patterns](// https://github.com/id-Software/Quake/blob/bf4ac424ce754894ac8f1dae6a3981954bc9852d/qw-qc/world.qc#L328-L372), or make your own. 
+You can use all the [Quake in-built flicker patterns](https://github.com/id-Software/Quake/blob/bf4ac424ce754894ac8f1dae6a3981954bc9852d/qw-qc/world.qc#L328-L372), or make your own. 
 
 ## Adding the component
 
