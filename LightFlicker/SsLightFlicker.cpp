@@ -5,32 +5,32 @@
 
 #include "Net/UnrealNetwork.h"
 
-TMap<ELightingCurveType, FRichCurve> USsLightFlickerHelper::Curves;
+TMap<ESsLightFlickerPattern, FRichCurve> USsLightFlickerHelper::Curves;
 TMap<FString, FRichCurve> USsLightFlickerHelper::CustomCurves;
 FCriticalSection USsLightFlickerHelper::CriticalSection;
 
 // Quake lighting flicker functions
 // https://github.com/id-Software/Quake/blob/bf4ac424ce754894ac8f1dae6a3981954bc9852d/qw-qc/world.qc#L328-L372
-const TMap<ELightingCurveType, FString> USsLightFlickerHelper::QuakeCurveSources {
-	{ ELightingCurveType::Flicker1, TEXT("mmnmmommommnonmmonqnmmo") },
-	{ ELightingCurveType::SlowStrongPulse, TEXT("abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba") },
-	{ ELightingCurveType::Candle1, TEXT("mmmmmaaaaammmmmaaaaaabcdefgabcdefg") },
-	{ ELightingCurveType::FastStrobe, TEXT("mamamamamama") },
-	{ ELightingCurveType::GentlePulse1, TEXT("jklmnopqrstuvwxyzyxwvutsrqponmlkj") },
-	{ ELightingCurveType::Flicker2, TEXT("nmonqnmomnmomomno") },
-	{ ELightingCurveType::Candle2, TEXT("mmmaaaabcdefgmmmmaaaammmaamm") },
-	{ ELightingCurveType::Candle3, TEXT("mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa") },
-	{ ELightingCurveType::SlowStrobe, TEXT("aaaaaaaazzzzzzzz") },
-	{ ELightingCurveType::FlourescentFlicker, TEXT("mmamammmmammamamaaamammma") },
-	{ ELightingCurveType::SlowPulseNoBlack, TEXT("abcdefghijklmnopqrrqponmlkjihgfedcba") },
+const TMap<ESsLightFlickerPattern, FString> USsLightFlickerHelper::QuakeCurveSources {
+	{ ESsLightFlickerPattern::Flicker1, TEXT("mmnmmommommnonmmonqnmmo") },
+	{ ESsLightFlickerPattern::SlowStrongPulse, TEXT("abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba") },
+	{ ESsLightFlickerPattern::Candle1, TEXT("mmmmmaaaaammmmmaaaaaabcdefgabcdefg") },
+	{ ESsLightFlickerPattern::FastStrobe, TEXT("mamamamamama") },
+	{ ESsLightFlickerPattern::GentlePulse1, TEXT("jklmnopqrstuvwxyzyxwvutsrqponmlkj") },
+	{ ESsLightFlickerPattern::Flicker2, TEXT("nmonqnmomnmomomno") },
+	{ ESsLightFlickerPattern::Candle2, TEXT("mmmaaaabcdefgmmmmaaaammmaamm") },
+	{ ESsLightFlickerPattern::Candle3, TEXT("mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa") },
+	{ ESsLightFlickerPattern::SlowStrobe, TEXT("aaaaaaaazzzzzzzz") },
+	{ ESsLightFlickerPattern::FlourescentFlicker, TEXT("mmamammmmammamamaaamammma") },
+	{ ESsLightFlickerPattern::SlowPulseNoBlack, TEXT("abcdefghijklmnopqrrqponmlkjihgfedcba") },
 };
 
-float USsLightFlickerHelper::EvaluateLightCurve(ELightingCurveType CurveType, float Time)
+float USsLightFlickerHelper::EvaluateLightCurve(ESsLightFlickerPattern CurveType, float Time)
 {
 	return GetLightCurve(CurveType).Eval(Time);
 }
 
-const FRichCurve& USsLightFlickerHelper::GetLightCurve(ELightingCurveType CurveType)
+const FRichCurve& USsLightFlickerHelper::GetLightCurve(ESsLightFlickerPattern CurveType)
 {
 	FScopeLock ScopeLock(&CriticalSection);
 
@@ -58,7 +58,7 @@ const FRichCurve& USsLightFlickerHelper::GetLightCurve(const FString& CurveStr)
 	return Curve;
 }
 
-void USsLightFlickerHelper::BuildCurve(ELightingCurveType CurveType, FRichCurve& OutCurve)
+void USsLightFlickerHelper::BuildCurve(ESsLightFlickerPattern CurveType, FRichCurve& OutCurve)
 {
 	if (auto pTxt = QuakeCurveSources.Find(CurveType))
 	{
@@ -103,13 +103,13 @@ void USsLightFlickerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (CurveType == ELightingCurveType::Custom)
+	if (FlickerPattern == ESsLightFlickerPattern::Custom)
 	{
-		Curve = &USsLightFlickerHelper::GetLightCurve(CustomLightCurveString);
+		Curve = &USsLightFlickerHelper::GetLightCurve(CustomFlickerPattern);
 	}
 	else
 	{
-		Curve = &USsLightFlickerHelper::GetLightCurve(CurveType);
+		Curve = &USsLightFlickerHelper::GetLightCurve(FlickerPattern);
 	}
 	TimePos = 0;
 	if (bAutoPlay)

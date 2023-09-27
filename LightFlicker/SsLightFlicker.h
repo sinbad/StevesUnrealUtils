@@ -8,7 +8,7 @@
 
 
 UENUM(BlueprintType)
-enum class ELightingCurveType : uint8
+enum class ESsLightFlickerPattern : uint8
 {
 	Flicker1,
 	Flicker2,
@@ -26,20 +26,20 @@ enum class ELightingCurveType : uint8
 	
 };
 /**
- * Helper class to get lighting intensity curves
+ * Helper class to get lighting flicker curves
  */
 UCLASS()
 class MAGERMINER_API USsLightFlickerHelper : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 protected:
-	static TMap<ELightingCurveType, FRichCurve> Curves;
+	static TMap<ESsLightFlickerPattern, FRichCurve> Curves;
 	static TMap<FString, FRichCurve> CustomCurves;
 	static FCriticalSection CriticalSection;
-	static const TMap<ELightingCurveType, FString> QuakeCurveSources;
+	static const TMap<ESsLightFlickerPattern, FString> QuakeCurveSources;
 	
 
-	static void BuildCurve(ELightingCurveType CurveType, FRichCurve& OutCurve);
+	static void BuildCurve(ESsLightFlickerPattern CurveType, FRichCurve& OutCurve);
 	static void BuildCurve(const FString& QuakeCurveChars, FRichCurve& OutCurve);
 
 public:
@@ -50,9 +50,9 @@ public:
 	 * @return Normalised value of the curve at this time
 	 */
 	UFUNCTION(BlueprintPure, Category="Lighting Curves")
-	static float EvaluateLightCurve(ELightingCurveType CurveType, float Time);
+	static float EvaluateLightCurve(ESsLightFlickerPattern CurveType, float Time);
 
-	static const FRichCurve& GetLightCurve(ELightingCurveType CurveType);
+	static const FRichCurve& GetLightCurve(ESsLightFlickerPattern CurveType);
 	static const FRichCurve& GetLightCurve(const FString& CurveStr);
 
 };
@@ -67,27 +67,27 @@ class USsLightFlickerComponent : public UActorComponent
 	GENERATED_UCLASS_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, Category="Light Curve")
-	ELightingCurveType CurveType = ELightingCurveType::Candle1;
+	UPROPERTY(EditAnywhere, Category="Light Flicker")
+	ESsLightFlickerPattern FlickerPattern = ESsLightFlickerPattern::Candle1;
 
-	/// If using a custom curve type, provide your own Quake-style string of letters, a-z (a = 0, m = 1, z = 2)
-	UPROPERTY(EditAnywhere, Category="Light Curve")
-	FString CustomLightCurveString;
+	/// If using a custom pattern, provide your own Quake-style string of letters, a-z (a = 0, m = 1, z = 2)
+	UPROPERTY(EditAnywhere, Category="Light Flicker")
+	FString CustomFlickerPattern;
 
 	/// Max output intensity multiplier value. Defaults to 2 since that's what Quake used!
 	/// We can *very slightly* exceed this max with 'z' as per standard Quake where z was 2.08
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Light Curve")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Light Flicker")
 	float MaxValue = 2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Light Curve")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Light Flicker")
 	float MinValue = 0;
 
 	/// Playback speed
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Light Curve")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Light Flicker")
 	float Speed = 1;
 
 	/// Whether to auto-start
-	UPROPERTY(EditAnywhere, Category="Light Curve")
+	UPROPERTY(EditAnywhere, Category="Light Flicker")
 	bool bAutoPlay = true;
 
 	UPROPERTY(ReplicatedUsing=OnRep_TimePos)
