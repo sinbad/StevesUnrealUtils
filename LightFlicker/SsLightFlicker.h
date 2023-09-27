@@ -57,7 +57,7 @@ public:
 
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLightCurveUpdated, float, LightValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLightFlickerUpdate, float, LightValue);
 /** 
  * LightCurveComponent is like a generated version of TimelineComponent, providing a generated lighting curve.
  */
@@ -103,7 +103,7 @@ protected:
 public:
 
 	UPROPERTY(BlueprintAssignable)
-	FOnLightCurveUpdated OnLightCurveUpdated;
+	FOnLightFlickerUpdate OnLightFlickerUpdate;
 
 	UFUNCTION(BlueprintCallable)
 	void Play(bool bResetTime = false);

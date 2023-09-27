@@ -121,7 +121,7 @@ void USsLightFlickerComponent::BeginPlay()
 void USsLightFlickerComponent::ValueUpdate()
 {
 	CurrentValue = FMath::Lerp(MinValue, MaxValue, Curve->Eval(TimePos));
-	OnLightCurveUpdated.Broadcast(CurrentValue);
+	OnLightFlickerUpdate.Broadcast(CurrentValue);
 }
 
 void USsLightFlickerComponent::Play(bool bResetTime)
