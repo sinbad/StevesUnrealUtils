@@ -30,7 +30,7 @@ enum class ESsLightFlickerPattern : uint8
  * Helper class to get lighting flicker curves
  */
 UCLASS()
-class MAGERMINER_API USsLightFlickerHelper : public UBlueprintFunctionLibrary
+class USsLightFlickerHelper : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 protected:
