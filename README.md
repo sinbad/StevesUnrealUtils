@@ -1,5 +1,5 @@
 # Steve's Unreal Utils
 
-Just a bunch of Unreal snippets that can be used together or separately. Each folder should be self-contained.
+**DEPRECATED**
 
-* [Light Flicker Component](LightFlicker/docs/Readme.md)
+I decided to move all of this stuff into [my helpers library](https://github.com/sinbad/StevesUEHelpers) for simplicity.
